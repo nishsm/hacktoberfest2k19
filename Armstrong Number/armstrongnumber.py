@@ -1,5 +1,4 @@
 a=int(input("please enter a number"))
-sum=0
 final=a
 
 while(a!=0):
