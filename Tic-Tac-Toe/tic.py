@@ -1,108 +1,83 @@
-from tkinter import *
-import tkinter.messagebox
-tk = Tk()
-tk.title("Tic Tac Toe")
+def tic_tac_toe():
+    board = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    end = False
+    win_commbinations = ((0, 1, 2), (3, 4, 5), (6, 7, 8), (0, 3, 6), (1, 4, 7), (2, 5, 8), (0, 4, 8), (2, 4, 6))
 
-pa = StringVar()
-playerb = StringVar()
-p1 = StringVar()
-p2 = StringVar()
+    def draw():
+        print(board[0], board[1], board[2])
+        print(board[3], board[4], board[5])
+        print(board[6], board[7], board[8])
+        print()
 
-player1_name = Entry(tk, textvariable=p1, bd=5)
-player1_name.grid(row=1, column=1, columnspan=8)
-player2_name = Entry(tk, textvariable=p2, bd=5)
-player2_name.grid(row=2, column=1, columnspan=8)
+    def p1():
+        n = choose_number()
+        if board[n] == "X" or board[n] == "O":
+            print("\nYou can't go there. Try again")
+            p1()
+        else:
+            board[n] = "X"
 
-bclick = True
-flag = 0
+    def p2():
+        n = choose_number()
+        if board[n] == "X" or board[n] == "O":
+            print("\nYou can't go there. Try again")
+            p2()
+        else:
+            board[n] = "O"
 
-def disableButton():
-    button1.configure(state=DISABLED)
-    button2.configure(state=DISABLED)
-    button3.configure(state=DISABLED)
-    button4.configure(state=DISABLED)
-    button5.configure(state=DISABLED)
-    button6.configure(state=DISABLED)
-    button7.configure(state=DISABLED)
-    button8.configure(state=DISABLED)
-    button9.configure(state=DISABLED)
+    def choose_number():
+        while True:
+            while True:
+                a = input()
+                try:
+                    a  = int(a)
+                    a -= 1
+                    if a in range(0, 9):
+                        return a
+                    else:
+                        print("\nThat's not on the board. Try again")
+                        continue
+                except ValueError:
+                   print("\nThat's not a number. Try again")
+                   continue
 
+    def check_board():
+        count = 0
+        for a in win_commbinations:
+            if board[a[0]] == board[a[1]] == board[a[2]] == "X":
+                print("Player 1 Wins!\n")
+                print("Congratulations!\n")
+                return True
 
+            if board[a[0]] == board[a[1]] == board[a[2]] == "O":
+                print("Player 2 Wins!\n")
+                print("Congratulations!\n")
+                return True
+        for a in range(9):
+            if board[a] == "X" or board[a] == "O":
+                count += 1
+            if count == 9:
+                print("The game ends in a Tie\n")
+                return True
 
-def btnClick(buttons):
-    global bclick, flag, player2_name, player1_name, playerb, pa
-    if buttons["text"] == " " and bclick == True:
-        buttons["text"] = "X"
-        bclick = False
-        playerb = p2.get() + " Wins!"
-        pa = p1.get() + " Wins!"
-        checkForWin()
-        flag += 1
+    while not end:
+        draw()
+        end = check_board()
+        if end == True:
+            break
+        print("Player 1 choose where to place a cross")
+        p1()
+        print()
+        draw()
+        end = check_board()
+        if end == True:
+            break
+        print("Player 2 choose where to place a nought")
+        p2()
+        print()
 
+    if input("Play again (y/n)\n") == "y":
+        print()
+        tic_tac_toe()
 
-    elif buttons["text"] == " " and bclick == False:
-        buttons["text"] = "O"
-        bclick = True
-        checkForWin()
-        flag += 1
-    else:
-        tkinter.messagebox.showinfo("Tic-Tac-Toe", "Button already Clicked!")
-
-def checkForWin():
-    if (button1['text'] == 'X' and button2['text'] == 'X' and button3['text'] == 'X' or):
-        disableButton()
-        tkinter.messagebox.showinfo("Tic-Tac-Toe", pa)
-
-    elif(flag == 8):
-        tkinter.messagebox.showinfo("Tic-Tac-Toe", "It is a Tie")
-
-    elif (button1['text'] == 'O' and button2['text'] == 'O' and button3['text'] == 'O' or
-          button4['text'] == 'O' and button5['text'] == 'O' and button6['text'] == 'O' or
-          button7['text'] == 'O' and button8['text'] == 'O' and button9['text'] == 'O' or
-          button1['text'] == 'O' and button5['text'] == 'O' and button9['text'] == 'O' or
-          button3['text'] == 'O' and button5['text'] == 'O' and button7['text'] == 'O' or
-          button1['text'] == 'O' and button2['text'] == 'O' and button3['text'] == 'O' or
-          button1['text'] == 'O' and button4['text'] == 'O' and button7['text'] == 'O' or
-          button2['text'] == 'O' and button5['text'] == 'O' and button8['text'] == 'O' or
-          button7['text'] == 'O' and button6['text'] == 'O' and button9['text'] == 'O'):
-        disableButton()
-        tkinter.messagebox.showinfo("Tic-Tac-Toe", playerb)
-
-
-buttons = StringVar()
-
-label = Label( tk, text="Player 1:", font='Times 20 bold', bg='white', fg='black', height=1, width=8)
-label.grid(row=1, column=0)
-
-
-label = Label( tk, text="Player 2:", font='Times 20 bold', bg='white', fg='black', height=1, width=8)
-label.grid(row=2, column=0)
-
-button1 = Button(tk, text=" ", font='Times 20 bold', bg='gray', fg='white', height=4, width=8, command=lambda: btnClick(button1))
-button1.grid(row=3, column=0)
-
-button2 = Button(tk, text=' ', font='Times 20 bold', bg='gray', fg='white', height=4, width=8, command=lambda: btnClick(button2))
-button2.grid(row=3, column=1)
-
-button3 = Button(tk, text=' ',font='Times 20 bold', bg='gray', fg='white', height=4, width=8, command=lambda: btnClick(button3))
-button3.grid(row=3, column=2)
-
-button4 = Button(tk, text=' ', font='Times 20 bold', bg='gray', fg='white', height=4, width=8, command=lambda: btnClick(button4))
-button4.grid(row=4, column=0)
-
-button5 = Button(tk, text=' ', font='Times 20 bold', bg='gray', fg='white', height=4, width=8, command=lambda: btnClick(button5))
-button5.grid(row=4, column=1)
-
-button6 = Button(tk, text=' ', font='Times 20 bold', bg='gray', fg='white', height=4, width=8, command=lambda: btnClick(button6))
-button6.grid(row=4, column=2)
-
-button7 = Button(tk, text=' ', font='Times 20 bold', bg='gray', fg='white', height=4, width=8, command=lambda: btnClick(button7))
-button7.grid(row=5, column=0)
-
-button8 = Button(tk, text=' ', font='Times 20 bold', bg='gray', fg='white', height=4, width=8, command=lambda: btnClick(button8))
-button8.grid(row=5, column=1)
-
-button9 = Button(tk, text=' ', font='Times 20 bold', bg='gray', fg='white', height=4, width=8, command=lambda: btnClick(button9))
-button9.grid(row=5, column=2)
-
-tk.mainloop()
+tic_tac_toe()
