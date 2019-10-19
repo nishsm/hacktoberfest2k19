@@ -1,15 +1,13 @@
-n=int(input("Enter an integer:"))
-print("Factors are:")
-i=0
-for(i=0;i<n;i++)
-while(i<=n):
-    k=0
-    if(n%i==0):
-        j=1
-        while(j<=i):
-            if(i%j==1):
-                k=k+1
-            j=j+1
-        if(k==2):
-            print(i)
-    i=i+1
+num = int(input("Enter a number: "))  
+  
+if num > 1:  
+   for i in range(2,num):  
+       if (num % i) == 0:  
+           print(num,"is not a prime number")  
+           print(i,"times",num//i,"is",num)  
+           break  
+   else:  
+       print(num,"is a prime number")  
+         
+else:  
+   print(num,"is not a prime number")
